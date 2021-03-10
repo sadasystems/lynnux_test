@@ -1,0 +1,27 @@
+name: terraform-fmt
+
+on:
+  pull_request:
+    paths:
+      - '**.tf'
+      - '**.tfvars'
+    branches:
+      - master
+
+jobs:
+  lintv12:
+    name: terraform-fmt-v12
+    runs-on: ubuntu-latest
+    container:
+      # Using v0.12.24
+      image: hashicorp/terraform@sha256:53fb1c0a78c8bb91c4a855c1b352ea7928f6fa65f8080dc7a845e240dd2a9bee
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ env.BRANCH }}
+    - name: Lint terraform
+      run: |
+        cd $GITHUB_WORKSPACE
+        terraform fmt -check -recursive -diff $d
